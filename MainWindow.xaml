@@ -1,0 +1,28 @@
+﻿<Window x:Class="BetterPaint.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BetterPaint"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Background="Black">
+    <Grid>
+        <Border BorderBrush="Wheat" BorderThickness="10" Margin="50">
+            <Image x:Name="ImageControl" RenderOptions.BitmapScalingMode="NearestNeighbor"  Stretch="UniformToFill"/>
+        </Border>
+
+        <StackPanel x:Name="FrameForButtons"/>
+
+        <TextBlock x:Name="MouseUIFrontInfo"/>
+
+        <StackPanel Orientation="Horizontal">
+            <Label x:Name="FramesPerSecondUI" Content="FPS :" FontSize="10" Foreground="White"  VerticalAlignment="Top" />
+            <Label x:Name="AllFPSCompuetdUI" Content="All Fps generated :" FontSize="10" Foreground="White"  VerticalAlignment="Top" Margin="20, 0"/>
+        </StackPanel>
+
+        <TextBox IsReadOnly="True" x:Name="IterationControllerUI" Text="Modulo Iteration" FontSize="10" Foreground="White" Background="Black" HorizontalAlignment="Center"  VerticalAlignment="Top" Margin="20, 0"/>
+
+
+
+    </Grid>
+</Window>
