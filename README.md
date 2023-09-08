@@ -29,3 +29,6 @@ Es soll noch:
 Andere Grafiken haben, wie
   *  ein 3-4 Eck
   *  Normale Funktionen können (wei ein Grafikrechner)
+  *  Layouts: wie z.B Vorne ist die Erde, und hinten ist der Weltraum
+  *  2D Texturen auf objekte impotieren zu können
+  *  Und ganz am ende soll es ein 3D raum erschaffen
