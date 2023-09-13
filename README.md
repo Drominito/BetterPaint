@@ -32,3 +32,10 @@ Andere Grafiken haben, wie
   *  Layouts: wie z.B Vorne ist die Erde, und hinten ist der Weltraum
   *  2D Texturen auf objekte impotieren zu können
   *  Und ganz am ende soll es ein 3D raum erschaffen
+
+
+# Gesichte (Während ich den Code geschrieben habe)
+### 13.09.2023
+Ich habe leider ein Code Datei komplett verloren, da ich leider ab dem Moment zum ersten mal Branches nutzte.
+Das Problem was ich gemacht habe ist das ich erst auf dem selben Branch weiter den Code geschrieben habe und dann ein Branch Hinzugeügt und bedauerlicherweiße ist es das alte geladen, meine Arbeit ist sozusagen verloren.
+Um wenigstens ein bisschen Optimistisch zu sein, könnte ich beim nächsten mal ein paar Prozente schneller sein, oder der Fehler von meinem ehemaligen Code erkennen.
