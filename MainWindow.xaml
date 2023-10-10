@@ -16,7 +16,7 @@
         <TextBlock x:Name="MouseUIFrontInfo"/>
 
         <StackPanel Orientation="Horizontal">
-            <Label x:Name="FramesPerSecondUI" Content="FPS :" FontSize="10" Foreground="White"  VerticalAlignment="Top" />
+            <Label x:Name="FramesPerSecondUI" Content="FPS :" FontSize="15" Foreground="White"  VerticalAlignment="Top" />
             <Label x:Name="AllFPSCompuetdUI" Content="All Fps generated :" FontSize="10" Foreground="White"  VerticalAlignment="Top" Margin="20, 0"/>
         </StackPanel>
 
