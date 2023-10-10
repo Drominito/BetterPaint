@@ -56,7 +56,7 @@ namespace BetterPaint
             MouseWheel += MainWindow_MouseWheel;
 
             MouseUIFrontInfo.HorizontalAlignment = HorizontalAlignment.Right;
-            MouseUIFrontInfo.FontSize = 30;
+            MouseUIFrontInfo.FontSize = 5;
             MouseUIFrontInfo.Foreground = System.Windows.Media.Brushes.White;
 
             KeyDown += MainWindow_KeyDown;
