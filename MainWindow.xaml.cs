@@ -19,6 +19,7 @@ namespace BetterPaint
         public event DetectingMousePositionDelegate DetectingMousePositionEvent;
         private Bitmap bitmap;
         private double Controller;
+        public int MiniSecondControler;
         private double DimensionIterationController = 0;
         public double ZoomOutMult = 1;
         DispatcherTimer timer;
@@ -77,14 +78,14 @@ namespace BetterPaint
 
         async private Task GenerateFrames()
         {
-            int width =  500;
-            int height = 500;
+            int Width = 500, Height = Width;
             // Erstelle ein neues Bitmap
-            bitmap = new Bitmap(width, height);
+            bitmap = new Bitmap(Width, Height);
 
             // Fülle das Bitmap mit Farben
             PatternLibary patternLibary = new PatternLibary(bitmap, Controller, MousePosition, GenerateZoom, DimensionIterationController, ZoomOutMult, FillTheCirle, ModuloKey, RangeKey, StateMult) ;
-            patternLibary.ModuloCircle();
+            //patternLibary.ModuloCircle();
+            patternLibary.Grid();
 
             // Setze das Bitmap als Quelle für das Image-Control
             ImageControl.Source = ConvertToBitmapSource(bitmap);
@@ -170,6 +171,7 @@ namespace BetterPaint
             //Controller= (Controller+=1) + (Controller*=5);
             //Controller = Controller + 2 * 65;
             Controller += 5000; // Default = 10;
+            MiniSecondControler += 2;
 
 
             DurationOfFrameGeneration.Start();
