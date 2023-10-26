@@ -78,17 +78,18 @@ namespace BetterPaint
 
         async private Task GenerateFrames()
         {
-            int Width = 500, Height = Width;
+            int Width = 250, Height = Width;
             // Erstelle ein neues Bitmap
             bitmap = new Bitmap(Width, Height);
 
             // Fülle das Bitmap mit Farben
             PatternLibary patternLibary = new PatternLibary(bitmap, Controller, MousePosition, GenerateZoom, DimensionIterationController, ZoomOutMult, FillTheCirle, ModuloKey, RangeKey, StateMult) ;
             //patternLibary.ModuloCircle();
-            patternLibary.Grid();
+            patternLibary.MathMonsterIFunny();
 
             // Setze das Bitmap als Quelle für das Image-Control
             ImageControl.Source = ConvertToBitmapSource(bitmap);
+
         }
 
         private void MainWindow_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -101,7 +102,7 @@ namespace BetterPaint
                 case Key.D: { MousePosition.X += 50;  /*GetMousePosition(e);*/ } break;
                 case Key.Z: { GenerateZoom += 5; } break;
 
-                case Key.Space: { DimensionIterationController += 1; } break;
+                case Key.Space: { DimensionIterationController += 0.1; } break;
 
                 case Key.Right:    { RangeKey  += 0.5  * StateMult; } break;
                 case Key.Left:     { RangeKey  -= 0.5  * StateMult; } break;
@@ -143,12 +144,15 @@ namespace BetterPaint
             {
                 if (e.Delta > 0)
                 {
-                    ZoomOutMult -= 0.25 * 100;
+                    ZoomOutMult -= 1;
                 }
                 else
                 {
-                    ZoomOutMult += 0.25 * 100;
+                    ZoomOutMult += 1;
                 }
+
+                ZoomScaleTextBlock.Text = $"ZoomScale : {ZoomOutMult}";
+                ZoomOutMult = Math.Abs(ZoomOutMult);
             });
         }
 
@@ -170,7 +174,7 @@ namespace BetterPaint
 
             //Controller= (Controller+=1) + (Controller*=5);
             //Controller = Controller + 2 * 65;
-            Controller += 5000; // Default = 10;
+            Controller += 20; // Default = 10;
             MiniSecondControler += 2;
 
 
