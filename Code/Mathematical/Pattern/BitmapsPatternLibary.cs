@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
@@ -12,7 +13,7 @@ using Color = System.Drawing.Color;
 
 namespace BetterPaint.Code.Mathematical.Pattern
 {
-    class PatternLibary
+    class BitmapsPatternLibary
     {
         //public class PatternLibaryGhost
         //{
@@ -34,7 +35,7 @@ namespace BetterPaint.Code.Mathematical.Pattern
         public double RangeKey                       { get; set; }
         public double StateMult                   { get; set; }
 
-        public PatternLibary( Bitmap bitmap, double controller, System.Windows.Point mouseposition,
+        public BitmapsPatternLibary( Bitmap bitmap, double controller, System.Windows.Point mouseposition,
                               int generatezoom, double dimensioniterationcontroller, double zoomoutmult)
         {
             this.bitmap   = bitmap;
@@ -48,7 +49,7 @@ namespace BetterPaint.Code.Mathematical.Pattern
 
 
 
-        public PatternLibary( Bitmap bitmap, double controller, bool fillthecircle,
+        public BitmapsPatternLibary( Bitmap bitmap, double controller, bool fillthecircle,
                               double modulokey, double rangekey, double statemult)
         {
             this.bitmap  = bitmap;
@@ -62,7 +63,7 @@ namespace BetterPaint.Code.Mathematical.Pattern
 
 
         
-        public PatternLibary( Bitmap bitmap, double controller, System.Windows.Point mouseposition,
+        public BitmapsPatternLibary( Bitmap bitmap, double controller, System.Windows.Point mouseposition,
                               int generatezoom, double dimensioniterationcontroller,
                               double zoomoutmult,bool fillthecircle, double modulokey, double rangekey, double statemult )
         {
@@ -102,7 +103,7 @@ namespace BetterPaint.Code.Mathematical.Pattern
                     //ty = ny;
 
 
-                    double Distacesquared1 = Math.Sqrt(Math.Pow(((x * DimensionIterationController) - (MousePosition.X - 350)) - CenterX, 2) * ZoomOutMult * (Controller) * 100 + Math.Pow(((y * DimensionIterationController) - (MousePosition.Y - 200)) - CenterY, 2) * ZoomOutMult * (Controller) * 100);
+                    double Distacesquared1 = Math.Sqrt(Math.Pow(((x * DimensionIterationController) - (MousePosition.X)) - CenterX, 2) * ZoomOutMult * (Controller) + Math.Pow(((y * DimensionIterationController) - (MousePosition.Y)) - CenterY, 2) * ZoomOutMult * (Controller)*100);
                     //double Distacesquared = Math.Sqrt(Math.Pow((x - (MousePosition.X - 350)) - CenterX, 2) * Math.Pow((y - (MousePosition.Y - 200)) - CenterY, 2));
                     Distacesquared1 = Distacesquared1 / (Radius * Radius * Radius * GenerateZoom);
                     //Distacesquared1 /= Radius;
@@ -115,12 +116,6 @@ namespace BetterPaint.Code.Mathematical.Pattern
 
                         bitmap.SetPixel(x, y, System.Drawing.Color.FromArgb(0, 255, 0)); // Green
                     }
-                    //else if (Distacesquared1 %0.09 > 0.005 && Distacesquared1 % 0.09 < 0.01 * Controller)
-                    //{
-                    //    bitmap.SetPixel(x, y, System.Drawing.Color.FromArgb(0, 255, 255));
-                    //}
-
-
                     else if (Distacesquared1 > 0.02 && Distacesquared1 < 0.025)
                     {
                         bitmap.SetPixel(x, y, System.Drawing.Color.FromArgb(255, 255 / 2, 255)); // Pink
@@ -133,7 +128,6 @@ namespace BetterPaint.Code.Mathematical.Pattern
                     {
                         bitmap.SetPixel(x, y, System.Drawing.Color.FromArgb(255, 0, 0)); // Red
                     }
-
                     else
                     {
                         int rnd2 = new Random().Next(x / 50, 255);
@@ -188,6 +182,57 @@ namespace BetterPaint.Code.Mathematical.Pattern
                 }
             }
         }
+        public void ImageChange()
+        {
+            double Width = bitmap.Width;
+            double Height = bitmap.Height;
+            double CenterX = bitmap.Width / 2;
+            double CenterY = bitmap.Width / 2;
+            double Radius = (((bitmap.Width + bitmap.Width) / 2) / 4);
+
+            string OriginalPath = @"C:\Users\Dromi\OneDrive\Desktop\Neuer Ordner\untitled.png";
+            string NewPath = "C:\\Users\\Dromi\\OneDrive\\Desktop\\TestFolder\\NewImage.png";
+            Color[,] PixelInfoArray = new Color[(int)Width, (int)Height];
+
+            for (int y = 0; y < Height; y++)
+            {
+
+
+                for (int x = 0; x < Width; x++)
+                {
+
+
+
+                    Color DefaultColor;
+                    DefaultColor = (Color)(PixelInfoArray.GetValue(x, y));
+
+                    byte Red = DefaultColor.R;
+                    byte Green = DefaultColor.G;
+                    byte Blue = DefaultColor.B;
+
+                    double DistanceSquared = Math.Sqrt(Math.Pow(x - CenterX, 2) + Math.Pow(y - CenterY, 2));
+
+
+                    //if (PixelInfoArray[x, y].R <= 200 && PixelInfoArray[x, y].G <= 200 && PixelInfoArray[x, y].B <= 200)
+                    //{
+                    //    bitmap.SetPixel(x, y, Color.FromArgb((Red), (Green), (Blue)));
+                    //}
+                    //else
+                    //{
+                    //    byte r = (byte)new Random().Next(Red);
+                    //    byte g = (byte)new Random().Next(Green);
+                    //    byte b = (byte)new Random().Next(Blue);
+                    //    bitmap.SetPixel(x, y, Color.FromArgb(r, g, b));
+                    //}
+                    if (x/y < DistanceSquared)
+                    {
+                        bitmap.SetPixel(x, y, Color.FromArgb(255, 0, 255));
+                    }
+                }
+            }
+        }
+
+
 
         
         public void QRCodeStar()
@@ -223,59 +268,132 @@ namespace BetterPaint.Code.Mathematical.Pattern
         }
 
 
-        public async Task Fractal()
+        public void Fractal()
         {
             int width = bitmap.Width;
             int height = bitmap.Height;
 
             int CenterX = width / 2;
             int CenterY = height / 2;
-            int Radius = width / 4;
+            int Radius = (CenterX + CenterY) / 2;
 
-            await Task.Run(() =>
+            double CursorX = CenterX - (MousePosition.X );
+            double CursorY = CenterY - (MousePosition.Y );
+
+            int Iterations = 500 * (int)(1 + StateMult);
+            int ModuloKey_Int = (int)ModuloKey;
+
+            for (int y = 0; y < height; y++)
             {
-                for (int y = 0; y < height; y++)
+                for (int x = 0; x < width; x++)
                 {
-                    for (int x = 0; x < width; x++)
+                    double DistanceSquared = (Math.Pow(x - CenterX, 2) + Math.Pow(y - CenterY, 2));
+                    DistanceSquared = Math.Sqrt(DistanceSquared);
+                    double realPart      = (x + CursorX)      / ZoomOutMult;
+                    double imaginaryPart = (y + CursorY) / ZoomOutMult;
+
+                    Complex complexC = new Complex(realPart, imaginaryPart);
+                    Complex complexZ = new Complex(0, ModuloKey);
+                    double ComplexZMagnitude = realPart / imaginaryPart;
+                    int iteration = 0;
+
+
+                    while (complexZ.Magnitude < 2 && iteration < Iterations)
                     {
+                        complexZ = (complexZ * complexZ) + complexC;
 
-
-                        double Distacesquared1 = Math.Sqrt(Math.Pow(x - CenterX, 2) + Math.Pow((y - RangeKey), 2));
-                        Distacesquared1 = Distacesquared1 / (Radius * Radius);
-
-
-                        //System.Drawing.Color color = System.Drawing.Color.FromArgb((int)Distacesquared1/4, (int)ModuloKey, (int)((1 + y) + Math.Pow((1 + y), 2)));
-
-
-
-                        if (FillTheCirle)
-                        {
-                            if (/*Distacesquared1 <= ModuloKey*/ Distacesquared1 % StateMult <= ModuloKey && Distacesquared1 % StateMult >= (ModuloKey / 2))
-                            {
-                                bitmap.SetPixel(x, y, System.Drawing.Color.FromArgb(255, 0, 0));
-                            }
-                            else
-                            {
-                                bitmap.SetPixel(x, y, System.Drawing.Color.FromArgb(255, 255, 0));
-                            }
-                        }
-                        else
-                        {
-                            if (Distacesquared1 <= ModuloKey)
-                            {
-                                bitmap.SetPixel(x, y, System.Drawing.Color.FromArgb(255, 0, 0));
-                            }
-                        }
-
-
-
-
-
-
+                        iteration++;
                     }
+
+                    if (iteration == Iterations)
+                    {
+                        bitmap.SetPixel(x, y, Color.Black);
+                    }
+                    else
+                    {
+                        double hue = (double)iteration / (Iterations); // Wert zwischen 0 und 1 basierend auf der Iteration
+                                                                                   //Color color = HsvToRgb(hue, 1.0, 1.0);
+                        int stdcolor = (int)(iteration % (255));
+
+                        Color color = Color.FromArgb(stdcolor, stdcolor, stdcolor);
+                        bitmap.SetPixel(x-ModuloKey_Int, y-ModuloKey_Int, color);
+                    }
+
+
+                   
+
                 }
-            });
+            }
         }
+
+        public void MouseMethod()
+        {
+            int width = bitmap.Width;
+            int height = bitmap.Height;
+
+            int CenterX = width / 2;
+            int CenterY = height / 2;
+            int Radius = (CenterX + CenterY) / 2;
+
+            double CursorX = CenterX + (MousePosition.X / 5);
+            double CursorY = CenterY + (MousePosition.Y / 5);
+
+            double ZoomFactor = ZoomOutMult;
+            int Iterations = 500 * (int)(1 + ZoomFactor);
+            int ModuloKey_Int = (int)ModuloKey;
+
+            double MouseDistanceSquared = (Math.Pow(MousePosition.X - CenterX, 2) + Math.Pow(MousePosition.Y - CenterY, 2));
+        }
+
+        private Color HsvToRgb(double hue, double saturation, double value)
+        {
+            int hi = Convert.ToInt32(Math.Floor(hue * 6)) % 6;
+            double f = hue * 6 - Math.Sin(hue * 6);
+            double p = value * (1 - saturation);
+            double q = value * (1 - f * saturation);
+            double t = value * (1 - (1 - f) * saturation);
+
+            double r, g, b;
+
+            switch (hi)
+            {
+                case 0:
+                    r = value;
+                    g = t;
+                    b = p;
+                    break;
+                case 1:
+                    r = q;
+                    g = value;
+                    b = p;
+                    break;
+                case 2:
+                    r = p;
+                    g = value;
+                    b = t;
+                    break;
+                case 3:
+                    r = p;
+                    g = q;
+                    b = value;
+                    break;
+                case 4:
+                    r = t;
+                    g = p;
+                    b = value;
+                    break;
+                default:
+                    r = value;
+                    g = p;
+                    b = q;
+                    break;
+            }
+            int rnd = new Random().Next(250, 255);
+
+            return Color.FromArgb((int)(r * rnd), (int)(g * rnd), (int)(b * rnd));
+        }
+
+
 
         public void Grid()
         {

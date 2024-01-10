@@ -7,9 +7,34 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Background="Black">
     <Grid>
-        <Border BorderBrush="Wheat" BorderThickness="10" Margin="50">
-            <Image x:Name="ImageControl" RenderOptions.BitmapScalingMode="NearestNeighbor"  Stretch="Uniform"/>
+
+        <TabControl Name="Hallo" Background="Transparent">
+    <TabControl.Template>
+        <ControlTemplate TargetType="TabControl">
+            <DockPanel>
+                <TabPanel x:Name="HeaderPanel" Panel.ZIndex="1" DockPanel.Dock="Bottom" IsItemsHost="True"/>
+                <Border x:Name="ContentPanel" BorderBrush="Wheat" BorderThickness="1" Margin="50">
+                    <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"/>
+                </Border>
+            </DockPanel>
+        </ControlTemplate>
+    </TabControl.Template>
+
+    <TabItem Header="Drawing">
+        <Border BorderBrush="Wheat" BorderThickness="10" Margin="5">
+            <Image x:Name="ImageControl" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="UniformToFill"/>
         </Border>
+    </TabItem>
+
+    <TabItem Header="Rendering">
+        <Border BorderBrush="Wheat" BorderThickness="10" Margin="10">
+            <Canvas x:Name="GDIWindow"/>
+        </Border>
+    </TabItem>
+</TabControl>
+
+
+            
 
         <StackPanel x:Name="FrameForButtons"/>
 
@@ -20,10 +45,11 @@
             <Label x:Name="AllFPSCompuetdUI" Content="All Fps generated :" FontSize="10" Foreground="White"  VerticalAlignment="Top" Margin="20, 0"/>
         </StackPanel>
 
-        <StackPanel  HorizontalAlignment="Center"  VerticalAlignment="Top" Margin="20, 0">
+        <StackPanel HorizontalAlignment="Center"  VerticalAlignment="Top" Margin="20, 0" Orientation="Horizontal">
 
-            <TextBox IsReadOnly="True" x:Name="IterationControllerUI" Text="Modulo Iteration" FontSize="10" Foreground="White" Background="Black"/>
-            <TextBlock x:Name="ZoomScaleTextBlock" Text="Zoom: NaN" Foreground="White"/>
+            <TextBox IsReadOnly="True" x:Name="IterationControllerUI" Text="Modulo Iteration" FontSize="10" Foreground="White" Background="Black" Margin="10, 0"/>
+            <TextBlock x:Name="ZoomScaleTextBlock" Text="Zoom: NaN" Foreground="White" Margin="10, 0"/>
+            <TextBlock x:Name="ResolutionShower" Text="Resolution: NaN" Foreground="White" Margin="10, 0"/>
             
         </StackPanel>
         

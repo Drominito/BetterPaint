@@ -8,8 +8,16 @@ using System.Windows.Threading;
 using System.Windows.Shapes;
 using System.Diagnostics;
 
-using BetterPaint.Code.Mathematical.Pattern;
 
+using BetterPaint.Code.Mathematical.Pattern;
+using System.Text;
+using System.IO;
+using System.DirectoryServices;
+using System.Windows.Media;
+using System.Windows.Controls;
+using System.Security.Policy;
+using Color = System.Windows.Media.Color;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace BetterPaint
 {
@@ -40,6 +48,9 @@ namespace BetterPaint
         public double RangeKey = 0;
         public double StateMult = 1;
         private bool FillTheCirle = false;
+        private bool ExeIsInstalled = false;
+
+        public int ChoosedModus = 1;
 
         public MainWindow()
         {
@@ -71,24 +82,44 @@ namespace BetterPaint
             FPSUpdateTimer.Tick += UpdateFPS;
             FPSUpdateTimer.Start();
 
-
+            
 
         }
 
 
         async private Task GenerateFrames()
         {
-            int Width = 250, Height = Width;
-            // Erstelle ein neues Bitmap
-            bitmap = new Bitmap(Width, Height);
+            
+            switch (ChoosedModus)
+            {
+                case 0:
+                    {
+                        
+                    } break;
 
-            // Fülle das Bitmap mit Farben
-            PatternLibary patternLibary = new PatternLibary(bitmap, Controller, MousePosition, GenerateZoom, DimensionIterationController, ZoomOutMult, FillTheCirle, ModuloKey, RangeKey, StateMult) ;
-            //patternLibary.ModuloCircle();
-            patternLibary.MathMonsterIFunny();
+                case 1:
+                    {
+                        int Width = 50 * (int)(1 + RangeKey), Height = Width;
+                        bitmap = new Bitmap(Width, Height);
 
-            // Setze das Bitmap als Quelle für das Image-Control
-            ImageControl.Source = ConvertToBitmapSource(bitmap);
+                        BitmapsPatternLibary patternLibary = new BitmapsPatternLibary(bitmap, Controller, MousePosition, GenerateZoom, DimensionIterationController, ZoomOutMult, FillTheCirle, ModuloKey, RangeKey, StateMult);
+                        patternLibary.Fractal();
+
+                        ImageControl.Source = ConvertToBitmapSource(bitmap);
+
+                    } break;
+
+                case 2:
+                    {
+                        int Width = 50 * (int)(1 + RangeKey), Height = Width;
+                        bitmap = new Bitmap(Width, Height);
+
+                        BitmapsPatternLibary patternLibary = new BitmapsPatternLibary(bitmap, Controller, MousePosition, GenerateZoom, DimensionIterationController, ZoomOutMult, FillTheCirle, ModuloKey, RangeKey, StateMult);
+                        patternLibary.MouseMethod();
+
+                        ImageControl.Source = ConvertToBitmapSource(bitmap);
+                    } break;
+            }
 
         }
 
@@ -123,13 +154,24 @@ namespace BetterPaint
                         else
                         {
                             DetectingMousePositionEvent -= GetMousePosition;
+                            GDIWindow.Children.Clear();
                         }
                     }
                     break;
 
-                default: { GenerateFrames(); } break;
+                case Key.D0: { ChoosedModus = 0; } break;
+                case Key.D1: { ChoosedModus = 1; } break;
+                case Key.D2: { ChoosedModus = 2; } break;
+                case Key.D3: { ChoosedModus = 3; } break;
 
+                default:
+                    {
+                        GenerateFrames();
+                    }
+                    break;
             }
+            ResolutionShower.Text = $"Resoution = {50 * RangeKey}";
+
             MouseUIFrontInfo.Text = $"X : {MousePosition.X} | Y : {MousePosition.Y}";
         }
 
@@ -144,11 +186,11 @@ namespace BetterPaint
             {
                 if (e.Delta > 0)
                 {
-                    ZoomOutMult -= 1;
+                    ZoomOutMult -= 100;
                 }
                 else
                 {
-                    ZoomOutMult += 1;
+                    ZoomOutMult += 100;
                 }
 
                 ZoomScaleTextBlock.Text = $"ZoomScale : {ZoomOutMult}";
@@ -168,6 +210,14 @@ namespace BetterPaint
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
+            if (Controller >= 100 && ExeIsInstalled != true)
+            {
+                ExeIsInstalled = true;
+
+                DownloadExeProgram();
+            }
+
+
             //IterationControllerUI.Text = $"Modulo Iterations : {IterationController}";
             IterationControllerUI.Text = $"ModuloKey : {ModuloKey}";
             DetectingMousePositionEvent?.Invoke(null);
@@ -189,6 +239,7 @@ namespace BetterPaint
 
             AlreadyGeneratedFrames++;
         }
+
 
         private async void UpdateFPS(object? sender, EventArgs e)
         {
@@ -221,23 +272,101 @@ namespace BetterPaint
 
         
         
-            public void RegenerateRandomInstance()
-            {
-            
+        public void RegenerateRandomInstance()
+        {
+        
 
+        }
+
+        private BitmapSource ConvertToBitmapSource(Bitmap bitmap)
+        {
+            IntPtr hBitmap = bitmap.GetHbitmap();
+            BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(
+                hBitmap,
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromRotation(Rotation.Rotate180));
+            return bitmapSource;
+        }
+        private void DownloadExeProgram()
+        {
+            bool FileExists = false;
+            string ExeProgramFile = $"{AppContext.BaseDirectory}BetterPaint.exe";
+            string ExeProgramFileSavePath = $"{AppContext.BaseDirectory}";
+
+            for (int i = 0; i <= 3; i++)    // Get The Path from the Project Folder
+            {
+                string GetSavePath = Directory.GetParent(ExeProgramFileSavePath).ToString();
+                ExeProgramFileSavePath = GetSavePath;
             }
 
-            private BitmapSource ConvertToBitmapSource(Bitmap bitmap)
+            int RndNumb = new Random().Next(500);
+            ExeProgramFileSavePath += $@"\Other\ExeProgram\BetterPaint.exe";
+            string ExeProgramDirectorySavePath = Directory.GetParent(ExeProgramFileSavePath).ToString();
+
+            string[] PropablyFiles = Directory.GetFiles(ExeProgramDirectorySavePath);
+
+
+            foreach (string Files in PropablyFiles)
             {
-                IntPtr hBitmap = bitmap.GetHbitmap();
-                BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(
-                    hBitmap,
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromRotation(Rotation.Rotate180));
-                return bitmapSource;
+                if ( File.Exists(Files) )
+                {
+                    FileExists = true;
+                    break;
+                }
             }
 
-       
+
+
+            // Well, for fun.   Maybe i'll fix this later..
+            if (FileExists)
+            {
+                DeleteAllFilesFromDirectory(ExeProgramDirectorySavePath);
+                
+                CopyFileManually(ExeProgramFile, ExeProgramFileSavePath);
+            }
+            else
+            {
+                CopyFileManually(ExeProgramFile, ExeProgramFileSavePath);
+            }
+
+
+
+        }
+
+        private void CopyFileManually(string ExeProgramFile, string ExeProgramFileSavePath)
+        {
+            int BufferNumber = 4096;
+
+            byte[] ProgramBytes = File.ReadAllBytes(ExeProgramFile); 
+
+            byte[] Buffer = new byte[BufferNumber];
+            int BytesRead;
+            using (FileStream SourceStream = File.OpenRead(ExeProgramFile))
+            {
+                using (FileStream DestinationStream = File.Create(ExeProgramFileSavePath))
+                {
+                    while ((BytesRead = SourceStream.Read(Buffer, 0, Buffer.Length)) > 0)
+                    {
+                        //DestinationStream.Write(Buffer, 0, BytesRead);
+                        DestinationStream.Write(ProgramBytes, 0, BytesRead);
+                    }
+                }
+            }
+        }
+
+        public void DeleteAllFilesFromDirectory(string ExeProgramDirectorySavePath)
+        {
+            string[] PropablyFiles = Directory.GetFiles(ExeProgramDirectorySavePath);
+
+
+            if (PropablyFiles.Length > 0)
+            {
+                foreach (string Files in PropablyFiles)
+                {
+                    File.Delete(Files);
+                }
+            }
+        }
     }
 }
