@@ -116,7 +116,7 @@ namespace BetterPaint
                         bitmap = new Bitmap(Width, Height);
 
                         BitmapsPatternLibary patternLibary = new BitmapsPatternLibary(bitmap, Controller, MousePosition, GenerateZoom, DimensionIterationController, ZoomOutMult, FillTheCirle, ModuloKey, RangeKey, StateMult);
-                        patternLibary.MouseMethod();
+                        patternLibary.ModuloCircle();
 
                         ImageControl.Source = ConvertToBitmapSource(bitmap);
                     } break;
@@ -289,6 +289,8 @@ namespace BetterPaint
                 BitmapSizeOptions.FromRotation(Rotation.Rotate180));
             return bitmapSource;
         }
+#pragma region FileManagment
+
         private void DownloadExeProgram()
         {
             bool FileExists = false;
@@ -310,7 +312,7 @@ namespace BetterPaint
 
             foreach (string Files in PropablyFiles)
             {
-                if ( File.Exists(Files) )
+                if (File.Exists(Files))
                 {
                     FileExists = true;
                     break;
@@ -323,7 +325,7 @@ namespace BetterPaint
             if (FileExists)
             {
                 DeleteAllFilesFromDirectory(ExeProgramDirectorySavePath);
-                
+
                 CopyFileManually(ExeProgramFile, ExeProgramFileSavePath);
             }
             else
@@ -339,7 +341,7 @@ namespace BetterPaint
         {
             int BufferNumber = 4096;
 
-            byte[] ProgramBytes = File.ReadAllBytes(ExeProgramFile); 
+            byte[] ProgramBytes = File.ReadAllBytes(ExeProgramFile);
 
             byte[] Buffer = new byte[BufferNumber];
             int BytesRead;
@@ -369,5 +371,7 @@ namespace BetterPaint
                 }
             }
         }
+#pragma endregion
+
     }
 }

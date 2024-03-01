@@ -81,8 +81,53 @@ namespace BetterPaint.Code.Mathematical.Pattern
         }
 
 
+        private Color HsvToRgb(double hue, double saturation, double value)
+        {
+            int hi = Convert.ToInt32(Math.Floor(hue * 6)) % 6;
+            double f = hue * 6 - Math.Sin(hue * 6);
+            double p = value * (1 - saturation);
+            double q = value * (1 - f * saturation);
+            double t = value * (1 - (1 - f) * saturation);
 
+            double r, g, b;
 
+            switch (hi)
+            {
+                case 0:
+                    r = value;
+                    g = t;
+                    b = p;
+                    break;
+                case 1:
+                    r = q;
+                    g = value;
+                    b = p;
+                    break;
+                case 2:
+                    r = p;
+                    g = value;
+                    b = t;
+                    break;
+                case 3:
+                    r = p;
+                    g = q;
+                    b = value;
+                    break;
+                case 4:
+                    r = t;
+                    g = p;
+                    b = value;
+                    break;
+                default:
+                    r = value;
+                    g = p;
+                    b = q;
+                    break;
+            }
+            int rnd = new Random().Next(250, 255);
+
+            return Color.FromArgb((int)(r * rnd), (int)(g * rnd), (int)(b * rnd));
+        }
         public void ModuloCircle()
         {
             int Width = bitmap.Width, Height = bitmap.Height;
@@ -138,7 +183,6 @@ namespace BetterPaint.Code.Mathematical.Pattern
                 }
             }
         }
-            
         public void ModuloCircle2()
         {
             int Width = bitmap.Width, Height = bitmap.Height;
@@ -231,10 +275,6 @@ namespace BetterPaint.Code.Mathematical.Pattern
                 }
             }
         }
-
-
-
-        
         public void QRCodeStar()
         {
             int Width = bitmap.Width, Height = bitmap.Height;
@@ -266,8 +306,6 @@ namespace BetterPaint.Code.Mathematical.Pattern
                 }   
             }
         }
-
-
         public void Fractal()
         {
             int width = bitmap.Width;
@@ -325,7 +363,6 @@ namespace BetterPaint.Code.Mathematical.Pattern
                 }
             }
         }
-
         public void MouseMethod()
         {
             int width = bitmap.Width;
@@ -344,57 +381,6 @@ namespace BetterPaint.Code.Mathematical.Pattern
 
             double MouseDistanceSquared = (Math.Pow(MousePosition.X - CenterX, 2) + Math.Pow(MousePosition.Y - CenterY, 2));
         }
-
-        private Color HsvToRgb(double hue, double saturation, double value)
-        {
-            int hi = Convert.ToInt32(Math.Floor(hue * 6)) % 6;
-            double f = hue * 6 - Math.Sin(hue * 6);
-            double p = value * (1 - saturation);
-            double q = value * (1 - f * saturation);
-            double t = value * (1 - (1 - f) * saturation);
-
-            double r, g, b;
-
-            switch (hi)
-            {
-                case 0:
-                    r = value;
-                    g = t;
-                    b = p;
-                    break;
-                case 1:
-                    r = q;
-                    g = value;
-                    b = p;
-                    break;
-                case 2:
-                    r = p;
-                    g = value;
-                    b = t;
-                    break;
-                case 3:
-                    r = p;
-                    g = q;
-                    b = value;
-                    break;
-                case 4:
-                    r = t;
-                    g = p;
-                    b = value;
-                    break;
-                default:
-                    r = value;
-                    g = p;
-                    b = q;
-                    break;
-            }
-            int rnd = new Random().Next(250, 255);
-
-            return Color.FromArgb((int)(r * rnd), (int)(g * rnd), (int)(b * rnd));
-        }
-
-
-
         public void Grid()
         {
             int Width = bitmap.Width, Height = bitmap.Height;
@@ -439,8 +425,6 @@ namespace BetterPaint.Code.Mathematical.Pattern
                 }
             }
         }
-
-        
         public void Cell()
         {
             int Width = bitmap.Width, Height = bitmap.Height;
@@ -762,8 +746,6 @@ namespace BetterPaint.Code.Mathematical.Pattern
                 }
             }
         }
-        
-
         public void SimpleCube()
         {
             int Width = bitmap.Width, Height = bitmap.Height;
@@ -815,6 +797,5 @@ namespace BetterPaint.Code.Mathematical.Pattern
                 }
             }
         }
-
     }
 }
